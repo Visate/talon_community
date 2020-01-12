@@ -1,26 +1,24 @@
-from talon.voice import Context, Key, Str
-from ..utils import alternatives, parse_word
+from talon.voice import Context, Str
 
-ctx = Context("words")
+# from ..utils import alternatives
 
-
-last_word = None
+ctx = Context("shrink")
 
 
 def shrink_word(m):
-    word = str(m._words[1])
-    if not word in shrink_map:
-        last_word = word
-        raise Exception("%s not in shrink map" % word)
-    Str(shrink_map[word])(None)
+    # Str(shrink_map[" ".join(m["shrink.words"])])(None)
+    Str(shrink_map[m[1]])(None)
 
 
 shrink_map = {
     "administrator": "admin",
     "alternate": "alt",
     "apartment": "apt",
+    "application": "app",
     "applications": "apps",
+    "argument": "arg",
     "arguments": "args",
+    "attribute": "attr",
     "attributes": "attrs",
     "authentication": "auth",
     "button": "btn",
@@ -49,6 +47,7 @@ shrink_map = {
     "return": "ret",
     "package": "pkg",
     "python": "py",
+    "project": "proj",
     "random": "rand",
     "frequency": "freq",
     "operations": "ops",
@@ -58,6 +57,7 @@ shrink_map = {
     "convolution": "conv",
     "deconvolution": "deconv",
     "derivative": "deriv",
+    "destination": "dest",
     "distribution": "dist",
     "contribute": "contrib",
     "delete": "del",
@@ -76,6 +76,7 @@ shrink_map = {
     "environment": "env",
     "application": "app",
     "inc.": "inc",
+    "include": "inc",
     "_c": "char",
     "administrator": "admin",
     "administrators": "admins",
@@ -111,6 +112,7 @@ shrink_map = {
     "develop": "dev",
     "developer": "dev",
     "development": "dev",
+    "dictionary": "dict",
     "directory": "dir",
     "divider": "div",
     "document": "doc",
@@ -149,17 +151,21 @@ shrink_map = {
     "previous": "prev",
     "production": "prod",
     "pseudo": "sudo",
+    "rectangle": "rect",
     "reference": "ref",
     "references": "refs",
     "repeat": "rep",
     "request": "req",
     "result": "res",
     "revision": "rev",
+    "session": "sess",
     "source": "src",
     "standard": "std",
     "standing": "stdin",
     "standout": "stdout",
     "string": "str",
+    "synchronize": "sync",
+    "synthesizer": "synth",
     "system": "sys",
     "temporary": "tmp",
     "text": "txt",
@@ -168,6 +174,7 @@ shrink_map = {
     "utility": "util",
     "value": "val",
     "variable": "var",
+    "velocity": "vel",
     # months,
     "january": "jan",
     "february": "feb",
@@ -180,7 +187,13 @@ shrink_map = {
     "october": "oct",
     "november": "nov",
     "december": "dec",
-    "dictionary": "dict",
 }
 
+
+def alternatives(options):
+    return " (" + " | ".join(sorted(map(str, options))) + ")"
+
+
 ctx.keymap({"shrink" + alternatives(shrink_map.keys()): shrink_word})
+# ctx.keymap({"shrink {shrink.words}": shrink_word})
+# ctx.set_list("words", shrink_map.keys())

@@ -1,13 +1,21 @@
-from talon.voice import Context, Key
-from ..utils import text
+import time
 
+from talon.voice import Context, Key
+
+from ..utils import text
 
 ctx = Context("slack", bundle="com.tinyspeck.slackmacgap")
 
 keymap = {
     # Channel
     "channel": Key("cmd-k"),
-    "channel <dgndictation>": [Key("cmd-k"), text, Key("enter")],
+    "channel <dgndictation>": [
+        Key("cmd-k"),
+        lambda m: time.sleep(0.1),
+        text,
+        lambda m: time.sleep(0.1),
+        Key("enter"),
+    ],
     "channel last": Key("alt-up"),
     "([channel] unread last | gopreev)": Key("alt-shift-up"),
     "channel next": Key("alt-down"),
@@ -24,12 +32,12 @@ keymap = {
     "((open | collapse) right pane | toggle sidebar)": Key("cmd-."),
     "direct messages": Key("cmd-shift-k"),
     "(unread threads | new threads | threads)": Key("cmd-shift-t"),
-    "(history [next] | back | backward | baxley)": Key("cmd-["),
-    "(back to the future | ford | forward | fourthly)": Key("cmd-]"),
+    "(history [next] | go back | [go] backward | baxley)": Key("cmd-["),
+    "(back to the future | ford | go forward | fourthly)": Key("cmd-]"),
     "next element": Key("tab"),
     "previous element": Key("shift-tab"),
     "(my stuff | activity)": Key("cmd-shift-m"),
-    "directory": Key("cmd-shift-e"),
+    "toggle directory": Key("cmd-shift-e"),
     "(starred [items] | stars)": Key("cmd-shift-s"),
     "unread [messages]": Key("cmd-j"),
     "(go | undo | toggle) full": Key("ctrl-cmd-f"),
@@ -57,7 +65,7 @@ keymap = {
     "(strike | strikethrough)": Key("cmd-shift-x"),
     "mark all read": Key("shift-esc"),
     "mark channel read": Key("esc"),
-    "clear": [Key("cmd-a"), Key("backspace")],
+    # "clear": [Key("cmd-a"), Key("backspace")],
     # Files and Snippets
     "upload": Key("cmd-u"),
     "snippet": Key("cmd-shift-enter"),
@@ -66,7 +74,8 @@ keymap = {
     "([toggle] video)": Key("v"),
     "invite": Key("a"),
     # Miscellaneous
-    "shortcuts": Key("cmd-/"),
+    "keyboard shortcuts": Key("cmd-/"),
+    "set status": Key("cmd-shift-y"),
 }
 
 ctx.keymap(keymap)
